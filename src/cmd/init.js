@@ -3,17 +3,17 @@ const logUtil = require('../utils/logutil')
 const inquirer = require('inquirer')
 const ora = require('ora')
 const downloadGit  = require('download-git-repo')
-const {getAll} = require('../utils/download')
+const {getAll} = require('../utils/common')
 const  cfgItems = [
   {
     name: 'author'
   }
 ]
 
-async function downloadLocal(templateName, projectName) {
+async function downloadLocal(projectName) {
   let config = await getAll()
   console.log(config)
-  let api =`${config.registry}/${templateName}`
+  let api =`${config.registry}/${config.template}`
   console.log(api)
   return new Promise((resolve, reject) => {
     downloadGit(api, projectName,{ clone: true }, (err) => {
@@ -24,13 +24,12 @@ async function downloadLocal(templateName, projectName) {
     })
   }) 
 }
-async function init(templateName, projectName) {
-  console.log(templateName, projectName)
+async function init(projectName) {
   if(!fs.existsSync(projectName)) {
     inquirer.prompt(cfgItems).then(async (answer) => {
       let spinner = ora("downloading template....")
       spinner.start()
-      let result = await downloadLocal(templateName, projectName)
+      let result = await downloadLocal(projectName)
       if(result === undefined) {
         spinner.succeed()
         let fileName = `${projectName}/package.json`

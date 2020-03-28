@@ -1,7 +1,7 @@
 const chalk = require('chalk')
 
 function success(msg) {
-  console.log(chalk.green.bold(`\n ${msg}) \n`))
+  console.log(chalk.green.bold(`\n ${msg} \n`))
 }
 function warn(msg) {
   console.log(chalk.red.bold(`\n ${msg}) \n`))
